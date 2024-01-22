@@ -81,15 +81,10 @@ public class PokeAPI {
 */
     }
 
-    public static void getAllThing(){
-       /*
-       Scanner scan = new Scanner(System.in);
-       System.out.print("\nEnter a pokemon ID to learn more: ");
-       String selectedID = scan.nextLine();
+    public static void getSpecific(int pokeID){
+        GetDetail yoink = new GetDetail();
 
-
-        */
-        String url2 = "https://pokeapi.co/api/v2/pokemon/?limit=1400";
+        String url2 = "https://pokeapi.co/api/v2/pokemon/" + pokeID;
         String urlResponse2 = "";
         try {
             URI myUri = URI.create(url2); // creates a URI object from the url string
@@ -101,34 +96,12 @@ public class PokeAPI {
             System.out.println(e.getMessage());
         }
         JSONObject jsonObj2 = new JSONObject(urlResponse2);
-        JSONArray pokeList = jsonObj2.getJSONArray("results");
-        for(int i = 0; i < pokeList.length(); i++){
-
-            JSONObject pokeObj = pokeList.getJSONObject(i);
-            String name = pokeObj.getString("name");
-            System.out.println(name);
-            int weight = getPokemonDetail(pokeObj.getString("url"),"weight");
-            int height = getPokemonDetail(pokeObj.getString("url"),"height");
-
-
-            System.out.println(weight/10.0);
-            System.out.println(height/10.0);
-        }
-    }
-    private static int getPokemonDetail(String pokemonUrl, String detail) {
-        try {
-            URI pokemonUri = URI.create(pokemonUrl);
-            HttpRequest pokemonRequest = HttpRequest.newBuilder().uri(pokemonUri).build();
-            HttpClient pokemonClient = HttpClient.newHttpClient();
-            HttpResponse<String> pokemonResponse = pokemonClient.send(pokemonRequest, HttpResponse.BodyHandlers.ofString());
-            String pokemonDetailsResponse = pokemonResponse.body();
-
-            JSONObject pokemonDetailsObj = new JSONObject(pokemonDetailsResponse);
-            return pokemonDetailsObj.getInt(detail);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return -1;
-        }
+        int weight =  jsonObj2.getInt("weight");
+        int height = jsonObj2.getInt("height");
+        String name = jsonObj2.getString("name");
+        System.out.println("Name: " +  name);
+        System.out.println("Weight: " + weight/10.0 + " kg");
+        System.out.println("Height: " + height/10.0 + " m");
     }
 
 }
